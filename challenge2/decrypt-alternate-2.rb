@@ -2,7 +2,7 @@ def test string
   if string.include?"include"
     puts string
     puts "Probably C!"
-    output = File.open("decrypted.txt","w")
+    output = File.open("decrypted-alternate.txt","w")
     output.puts(string)
     output.close
   end
@@ -10,7 +10,7 @@ def test string
   if string.include?"import"
     puts string
     puts "Probably Java!"
-    output = File.open("decrypted.txt","w")
+    output = File.open("decrypted-alternate.txt","w")
     output.puts(string)
     output.close
   end
@@ -18,7 +18,7 @@ def test string
   if string.include?"require"
     puts string
     puts "Probably ruby!"
-    output = File.open("decrypted.txt","w")
+    output = File.open("decrypted-alternate.txt","w")
     output.puts(string)
     output.close
   end
@@ -26,12 +26,12 @@ def test string
   if string.include?"return"
     puts string
     puts "Found it, but language set is too large to determine the language"
-    output = File.open("decrypted.txt","w")
+    output = File.open("decrypted-alternate.txt","w")
     output.puts(string)
     output.close
   end
 end
-
+time = Time.now
 input = File.read("EncryptedProcessEasy.txt")
 array = Array.new
 
@@ -43,14 +43,11 @@ end
 string = array.to_s
 puts string
 keyspace = Array.new
-('A'..'Z').to_a.to_s.each_byte do |byte|
+(0..127).each do |byte|
   keyspace.push(byte)
 end
 
-('a'..'z').to_a.to_s.each_byte do |byte|
-  keyspace.push(byte)
-end
-total = 52*52*52*52
+total = 127*127*127*127 
 j = 0
 keyspace.each do |cipher1|
   keyspace.each do |cipher2|
@@ -70,3 +67,6 @@ keyspace.each do |cipher1|
     end
   end
 end
+
+time = Time.now - time
+puts "This run took #{time} seconds."
