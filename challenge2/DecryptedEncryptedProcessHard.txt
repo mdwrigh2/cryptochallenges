@@ -1,9 +1,3 @@
-19	
-16	
-9		
-26	
-
-
 import java.io.*;
 import java.util.*;
 
@@ -43,7 +37,6 @@ public class Process{
 	
 	public boolean decrypt(String file) throws IOException{
 		File f = new File(file);
-    System.out.println("I'm starting at least");
 		if( f.canRead()){
 			int[] shift = new int[1];
 			char[] codeWord = new char[1];
@@ -68,16 +61,12 @@ public class Process{
 			try{	int count = 0;
 						
 				while(reader.hasNext()){
-          System.out.println("Count :"+count);
 					int temp = Integer.parseInt(reader.next(), 16);
-          System.out.println("Setting temp1");
 					int temp1 = (temp-compare[count]+127)%127;
 					if(temp1 != shift[0]){
 						shift = Arrays.copyOf(shift, count+1);
 						codeWord = Arrays.copyOf(codeWord, count + 1);
-            System.out.println("Setting shift[count]=temp1");
 						shift[count] = temp1;
-            System.out.println("Setting codeWord[count]");
 						codeWord[count] = (char)temp1;
 					}
 					else{
@@ -89,11 +78,11 @@ public class Process{
 				count = 0;
 				
 				String word = new String(codeWord);
+				System.out.println(codeWord);
 				
 				while(reader.hasNext()){
 					String temp4 = reader.next();
 					int temp3 = Integer.parseInt(temp4, 16);
-          System.out.println("Setting temp2");
 					char temp2 = (char)((temp3-shift[count%shift.length]+127)%127);
 					writer.write(temp2);
 					count++;
@@ -112,7 +101,7 @@ public class Process{
 	}
 	
 	public void win(){
-		String text = "40 5f 17 5f 5c 65 1e 5c 52 10 5d 4f 54 65 69 4b 51 10 60 5a d 5f 6c 5a 1b 10 50 47 66 11 17 3a 55 55 17 54 52 68 6b 6 5c 5e 5c 6 50 51 65 6 4f 55 17 4c 5c 65 65 4a d 51 6b 6 64 67 6e 14 50 51 69 59 5c 5e 5f 55 59 57 58 5a 52 1e 5a 55 5a 1f 58 4c 56 5e 5c 14 d 10 1 3f 5c 65 69 6 55 59 65 5a 60 10 5d 55 5f 10 6b 4e 52 10 65 4b 65 64 17 58 5c 65 65 4a 27 10 6b 4e 56 63 17 55 5b 55 17 4f 60 10 58 54 d 51 5d 4f 5b 55 17 49 56 60 5f 4b 5f 10 58 54 51 10 60 5a d 67 60 52 59 10 59 4b d 55 65 49 5c 54 5c 4a d 31 4a 29 36 39 25 6 38 55 5c 56 d 53 5f 4b 50 5b 60 54 54 10 59 47 50 5b 17 47 61 10 6b 4e 52 10 67 47 54 55 17 4c 5c 62 17 5a 55 55 17 59 52 53 66 54 51 10 5a 4e 4e 5c 63 4b 5b 57 5c 12 d 59 5d 6 36 10 5b 4b 50 59 5b 4b d 64 5f 47 61 10 60 5a 14 63 17 5a 5c 5f 17 4b 63 59 63 6 36 10 6e 4f 59 5c 17 58 52 5c 5c 47 60 55 17 53 5c 62 5c 6 56 5e 5d 55 5f 5d 58 5a 56 5f 65 14 76 39 5d 6 66 5f 6c 6 64 51 65 5a d 64 66 6 4f 55 17 47 51 54 5c 4a d 64 66 6 61 58 5c 6 59 55 58 4a 52 62 17 48 5c 51 69 4a d 55 64 47 56 5c 17 53 52 10 58 5a 27 10 3d 58 52 55 4b 4e 56 5e 62 4b 5f 63 47 5b 59 60 60 5a 2d 57 64 47 56 5c 25 49 5c 5d 17 5d 56 64 5f 6 61 58 5c 6 50 5f 5b 4b d 67 66 58 51 10 40 6 62 63 5c 4a d 56 66 58 d 55 65 49 5c 54 60 54 54 10 5a 4e 4e 5c 63 4b 5b 57 5c 6 61 67 66 6 15 55 58 59 66 10 66 58 d 58 58 58 51 19 17 47 60 10 6b 4e 52 10 6a 5b 4f 5a 5c 49 61 10 63 4f 5b 55 17 47 5b 54 17 5a 52 5c 63 6 5a 55 17 59 5c 5d 5c 5d 55 55 69 4b d 59 65 6 61 58 5c 6 4f 5f 5b 5f d 67 5f 47 61 10 70 55 62 10 6e 47 5b 64 17 5a 5c 10 59 4b d 53 58 52 59 55 5b 14 76 ";
+		String text = "40 5f 17 5f 60 5f b 62 52 6 5a 56 57 6c 58 56 4e 4 55 61 6 63 62 64 25 6 4a 4b 5d d d 3a 5c 52 10 65 4b 69 5e 4 5b 5b 4b 14 50 51 65 6 53 4f 4 52 5c 5b 62 51 10 58 5a 11 61 5b 63 1b 49 55 5f 63 66 54 59 59 50 53 4e 5a 59 1b 53 66 53 20 4b 4a 55 5b 4b 22 d 10 1 3f 60 5f 56 c 55 4f 62 61 63 17 4c 60 5c 4 60 55 4b 14 5b 55 6f 5a 11 5c 53 61 5b 4a 2e d 64 5f 4f 64 a 53 5a 52 6 5d 60 10 58 54 11 4b 4a 55 5b 4b 14 50 59 67 4e 56 5c 4 4d 5b 4a 14 56 64 17 5d 5a 56 50 c 4f 4b 14 52 5e 5a 55 55 4f 48 c 2e 39 37 36 39 25 6 3c 4f 49 5c d 49 5c 52 53 62 4f 5f 51 4 4e 4e 49 5f d 51 6b 6 65 52 49 c 5d 47 5b 52 10 5d 55 63 a 58 54 52 6 67 52 53 66 54 55 a 47 54 4e 52 60 52 5e 5e 4b 1d a 4d 52 d 2f 14 51 55 5a 4f 55 4f 4 60 55 47 68 d 59 6b d 64 a 58 5b 5c 6 59 63 59 63 6 3a a 5b 55 59 52 14 5f 55 63 4b 52 5d 49 c 5a 55 66 52 10 60 54 57 59 56 59 4e 5a 5d 5c 5e 25 6f 3a 50 4 65 5c 5b 14 64 51 65 5a 11 5e 53 c 4f 4b 14 4e 54 5b 4b 55 a 58 5b d 5a 5c 52 10 63 4b 52 4e 49 5e d 48 63 4e 62 5b 6 56 57 45 55 59 6 61 52 10 58 5a 2b a 2a 5e 52 4b 48 55 59 65 51 56 5c 57 3c 62 52 64 56 64 37 4d 5e 4b 4d 58 1b 49 63 5a 10 6e 4f 65 52 4 60 55 4b 14 50 5f 5b 4b 11 61 53 5e 51 6 3d d 65 6a 4b 55 a 4a 5b 5f 6 59 5b 53 66 4a 5a 58 4b c 50 4e 55 59 5c 5c 54 58 4f 4 60 64 55 14 15 55 58 59 6a a 53 5e d 4e 55 5f 54 20 6 52 5d 4 60 55 4b 14 60 65 59 50 56 4d 58 c 59 4f 62 52 10 58 54 55 a 58 51 59 52 14 5a 55 17 59 60 57 49 63 55 4b 66 52 10 60 54 11 5e 4c 51 d 48 63 51 69 17 5d 59 4b 58 c 66 55 69 d 67 58 54 65 a 58 5b d 48 59 d 53 58 52 5d 4f 48 1a 76 ";
 		System.out.println(text);
 	}	
 }

@@ -1,0 +1,132 @@
+14
+57
+#include <stdio.h>
+#include <stdlib.h>
+
+int encrypt(FILE *fp, int a, int b);
+int decrypt(FILE *fq);
+void win();
+
+
+int main(int argc, char *argv[]){
+	FILE *fp = fopen("Process.c", "r");
+		if( fp == NULL ){
+			printf("Source not found\n");
+		}
+		
+	int a = (rand()*rand()*rand())%127;
+	int b = (rand()*rand()*rand())%127;
+	
+	int encryptWorked = encrypt(fp, a, b);
+	
+	if( encryptWorked ){
+		printf("Encrypted Successfuly \n");
+	}
+	
+	FILE *fq = fopen("EncryptedProcess.txt", "r");
+		if( fq == NULL ){
+			printf("Encrypted file not found\n");
+		}
+	
+	int decryptWorked = decrypt(fq);
+	
+	if( decryptWorked ){
+		printf("Decrypted Successfully \n");
+	}
+	
+	win();
+	
+	return 1;
+	
+}
+
+int encrypt(FILE *fp, int a, int b){
+	FILE *fr = fopen("EncryptedProcess.txt", "w+");
+		if( fr == NULL ){
+			return 0;
+		}
+
+	while(1){
+		char reader = getc(fp);
+		
+		if( reader == EOF ){
+			break;
+		}
+		else{
+			int newC = ((a*reader + b)%127);
+			fprintf(fr,"%x ",newC);
+		}
+	}
+	
+	fclose(fp);
+	fclose(fr);
+	
+	return 1;
+}
+
+int decrypt(FILE *fq){
+	FILE *fr = fopen("DecryptedProcess.txt", "w+");
+		if( fr == NULL ){
+			return 0;
+		}	
+	int a = 0;
+	int aInverse = 0;
+	int b = 0;
+	int c = 0;
+
+	int reader;
+	int reader1;
+	fscanf(fq,"%x", &reader1);
+	int reader2;
+	fscanf(fq,"%x", &reader2);
+	
+	int readerDiff = (reader1 - reader2 + 3*127)%127;
+	int knownDiff = ('#'-'i'+ 127)%127;
+
+	for(a = 0; a < 127; a++){
+		if( ((knownDiff*a)%127) == readerDiff ){
+			break;
+		}
+	}
+
+	for(b = 0; b < 127; b++){
+		if( (('#'*a + b)%127) == reader1 ){
+			break;
+		}
+	}
+
+	for(aInverse = 0; aInverse < 127; aInverse++){
+		if( ((a*aInverse)%127) == 1 ){
+			break;
+		}
+	}
+	
+	c = ((aInverse*b)%127);
+
+	printf("a = %d b = %d\n", a, b);
+	
+	fprintf(fr,"#i");
+	int count = 0;
+	
+	
+	while(  fscanf(fq,"%x", &reader) != EOF ){
+		count++;
+		
+		if(reader == EOF){
+			break;
+		}
+		else{
+			int newC = ((aInverse*reader - c +127)%127);
+			fprintf(fr,"%c",newC);
+		}
+	}
+	
+	fclose(fq);
+	fclose(fr);
+	return 1;
+				
+}
+	
+void win(){
+	printf("14 16 62 3b 16 5f 23 56 70 62 67 4c 5e 5f 7a 70 79 62 4c 68 62 16 5f 68 63 62 5d 15 3b 59 62 b 55 70 62 1f 70 44 68 62 16 1f 70 62 3 15 1f 62 c 70 62 67 16 5f 1f 79 62 15 68 62 4d 4d 4d 63 3 15 7a 71 16 1f 55 16 31 5e 15 68 70 63 3 16 28 5a 68 55 4c 7a 79 63 62 62 2a 5d 16 5f 7a 62 55 4c 1f 68 71 62 67 16 7a 62 68 55 70 62 1f 70 44 68 62 7a 16 5f 1f 79 76 62 4c 68 62 4c 71 62 71 4c 28 d 31 70 62 15 1f 79 62 4c 1f 56 16 31 56 70 71 62 28 15 68 7a 4c 3 4c 70 71 63 62 5c 70 70 d 62 3 55 70 3 3a 4c 1f 5e 62 c 15 3 3a 62 15 68 62 68 55 70 62 d 15 5e 70 62 67 16 7a 62 68 55 70 62 68 55 4c 7a 79 62 3 55 15 31 31 70 1f 5e 70 75 62 4c 67 62 6e 62 79 70 3 4c 79 70 62 68 55 15 68 62 4c 68 23 71 62 68 16 16 62 70 56 4c 31 62 6e 62 4d 4c 31 31 62 7a 70 31 70 15 71 70 62 28 16 7a 70 62 4c 1f 67 16 7a 28 15 68 4c 16 1f 63 2a 6e 67 62 3b 16 5f 62 4d 15 1f 68 62 68 16 62 c 70 62 15 79 79 70 79 62 68 16 62 68 55 70 62 31 70 15 79 70 7a 62 c 16 15 7a 79 62 70 28 15 4c 31 62 28 70 62 15 68 76 62 a 7a 70 70 b 55 4c 1f 3a 70 7a 71 2f 5f 31 d 4c 68 40 5e 28 15 4c 31 63 3 16 28 62 4d 4c 68 55 62 1 16 16 5e 31 70 62 4c 71 62 68 15 3a 4c 1f 5e 62 16 56 70 7a 62 68 55 70 62 4d 16 7a 31 79 62 15 71 62 68 55 70 62 71 5f c 43 70 3 68 62 31 4c 1f 70 62 15 1f 79 62 68 70 31 31 62 28 70 62 71 16 28 70 4d 55 70 7a 70 62 4c 1f 62 68 55 70 62 c 16 79 3b 62 4d 55 15 68 62 3b 16 5f 62 4d 15 1f 68 62 68 16 62 c 70 62 3 15 31 31 70 79 63 2a");
+	}	

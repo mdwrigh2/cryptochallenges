@@ -3,6 +3,8 @@ public class Decrypted {
   {
     Process proc = new Process();
     try{
+      int i = (int)'i';
+      System.out.println(i);
       proc.decrypt("win.txt");
     }
     catch(Exception e) {
